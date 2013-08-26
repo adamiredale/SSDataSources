@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "SSBaseDataSource.h"
+#import "SSFilterableDataSource.h"
 #import <CoreData/CoreData.h>
 
 /**
@@ -17,7 +17,7 @@
  * updates in response to FRC events.
  */
 
-@interface SSCoreDataSource : SSBaseDataSource <NSFetchedResultsControllerDelegate>
+@interface SSCoreDataSource : SSFilterableDataSource <NSFetchedResultsControllerDelegate>
 
 /**
  * The data source's fetched results controller. You probably don't need to set this directly

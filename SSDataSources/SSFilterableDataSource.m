@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Splinesoft. All rights reserved.
 //
 
-#import "SSFilterableDataSource.h"
+#import "SSDataSources.h"
 
-@interface SSFilterableDataSource () <UISearchDisplayDelegate, UISearchBarDelegate>
+@interface SSFilterableDataSource () <UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDelegate>
 
 - (void) executeSearchWithTerm:(NSString *)term;
 
@@ -16,7 +16,9 @@
 
 @implementation SSFilterableDataSource {
     UISearchDisplayController *searchDisplayController;
-    NSMutableArray *searchResults;
+    NSMutableArray *resultIndexes;
+    
+    SSArrayDataSource *resultsDataSource;
 }
 
 @synthesize searchBar, searchDelay, dataSourceSearcher;
@@ -32,6 +34,9 @@
 }
 
 - (void)dealloc {
+    searchDisplayController = nil;
+    resultsDataSource = nil;
+    
     self.searchBar = nil;
     self.dataSourceSearcher = nil;
 }
@@ -59,6 +64,9 @@
     if( !searchDisplayController ) {
         searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar
                                                                     contentsController:viewcontroller];
+        searchDisplayController.delegate = self;
+        searchDisplayController.searchResultsDataSource = self;
+        searchDisplayController.searchResultsDelegate = self;
     }
     
     [searchDisplayController setActive:YES
@@ -106,12 +114,21 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller
  willShowSearchResultsTableView:(UITableView *)tableView {
     
-    self.tableView = tableView; // TBD
-    
+    resultsDataSource.tableView = tableView;
 }
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
     
+}
+
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    id object;
+    
+    if( [self.dataSourceSearcher respondsToSelector:@selector(dataSource:didSelectSearchResult:)] )
+        [self.dataSourceSearcher dataSource:self
+                      didSelectSearchResult:object];
 }
 
 #pragma mark - UISearchBarDelegate

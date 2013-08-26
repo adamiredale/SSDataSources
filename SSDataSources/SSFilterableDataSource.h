@@ -62,10 +62,12 @@ typedef void (^SSFilteredResultsBlock) (NSArray *);
 
 @protocol SSDataSourcesSearcher <NSObject>
 
-@required
+@optional
 
 - (void) dataSource:(SSFilterableDataSource *)dataSource
   didSearchWithTerm:(NSString *)term
        resultsBlock:(SSFilteredResultsBlock)resultsBlock;
+
+- (void) dataSource:(SSFilterableDataSource *)dataSource didSelectSearchResult:(id)result;
 
 @end

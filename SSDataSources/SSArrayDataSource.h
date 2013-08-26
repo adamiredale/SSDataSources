@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "SSBaseDataSource.h"
+#import "SSFilterableDataSource.h"
 #import <CoreData/CoreData.h>
 
 /**
@@ -18,7 +18,7 @@
  * perform insert/reload/delete calls when the data changes.
  */
 
-@interface SSArrayDataSource : SSBaseDataSource
+@interface SSArrayDataSource : SSFilterableDataSource
 
 /**
  * Create a new array data source by specifying an array of items.
