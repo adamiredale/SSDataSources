@@ -21,7 +21,7 @@
     SSArrayDataSource *resultsDataSource;
 }
 
-@synthesize searchBar, searchDelay, dataSourceSearcher;
+@synthesize searchDelay, dataSourceSearcher;
 
 #pragma mark - Init
 
@@ -37,7 +37,6 @@
     searchDisplayController = nil;
     resultsDataSource = nil;
     
-    self.searchBar = nil;
     self.dataSourceSearcher = nil;
 }
 
@@ -47,19 +46,9 @@
     return [searchDisplayController isActive];
 }
 
-- (void)startSearchingAnimated:(BOOL)animated inViewController:(UIViewController *)viewcontroller {
+- (void)startSearchingAnimated:(BOOL)animated withSearchBar:(UISearchBar *)searchBar inViewController:(UIViewController *)viewcontroller {
     if( [searchDisplayController isActive] )
         return;
-
-    if( !searchBar ) {
-        searchBar = [[UISearchBar alloc] initWithFrame:(CGRect) {
-            0, 0,
-            CGRectGetWidth(self.tableView.bounds),
-            44
-        }];
-        
-        searchBar.delegate = self;
-    }
 
     if( !searchDisplayController ) {
         searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar
@@ -77,7 +66,7 @@
     if( ![searchDisplayController isActive] )
         return;
     
-    [searchBar resignFirstResponder];
+    [searchDisplayController.searchBar resignFirstResponder];
     
     [searchDisplayController setActive:NO animated:animated];
 }
@@ -129,17 +118,6 @@
     if( [self.dataSourceSearcher respondsToSelector:@selector(dataSource:didSelectSearchResult:)] )
         [self.dataSourceSearcher dataSource:self
                       didSelectSearchResult:object];
-}
-
-#pragma mark - UISearchBarDelegate
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)ASearchBar {
-    ASearchBar.text = nil;
-    [ASearchBar resignFirstResponder];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)ASearchBar {
-    [ASearchBar resignFirstResponder];
 }
 
 @end

@@ -28,13 +28,6 @@
 @property (nonatomic, readonly) BOOL isSearching;
 
 /**
- * The search bar to use. 
- * If you want to use your own search bar, assign it here.
- * You can leave this blank and one will be created for you.
- */
-@property (nonatomic, strong) UISearchBar *searchBar;
-
-/**
  * Optional delay, in seconds, to wait after a keystroke before beginning a search.
  * For example, if you're doing a search that requires a network request, this can
  * help cut down on network operations.
@@ -47,7 +40,7 @@
  * @param animated - whether to animate the search
  * @param viewcontroller - the view controller managing the display of the objects being searched
  */
-- (void) startSearchingAnimated:(BOOL)animated inViewController:(UIViewController *)viewcontroller;
+- (void) startSearchingAnimated:(BOOL)animated withSearchBar:(UISearchBar *)searchBar inViewController:(UIViewController *)viewcontroller;
 
 /**
  * Stop searching.
