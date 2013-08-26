@@ -14,9 +14,13 @@
  * You need only to manage a searching block.
  */
 
+@protocol SSDataSourcesSearcher;
+
 @interface SSFilterableDataSource : SSBaseDataSource
 
 #pragma mark - Searching
+
+@property (nonatomic, assign) id <SSDataSourcesSearcher> dataSourceSearcher;
 
 /**
  * Current searching status. Read-only.
@@ -49,5 +53,19 @@
  * Stop searching.
  */
 - (void) stopSearchingAnimated:(BOOL)animated;
+
+@end
+
+/////////
+
+typedef void (^SSFilteredResultsBlock) (NSArray *);
+
+@protocol SSDataSourcesSearcher <NSObject>
+
+@required
+
+- (void) dataSource:(SSFilterableDataSource *)dataSource
+  didSearchWithTerm:(NSString *)term
+       resultsBlock:(SSFilteredResultsBlock)resultsBlock;
 
 @end

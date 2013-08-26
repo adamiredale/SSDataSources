@@ -19,7 +19,7 @@
     NSMutableArray *searchResults;
 }
 
-@synthesize searchBar, searchDelay;
+@synthesize searchBar, searchDelay, dataSourceSearcher;
 
 #pragma mark - Init
 
@@ -33,6 +33,7 @@
 
 - (void)dealloc {
     self.searchBar = nil;
+    self.dataSourceSearcher = nil;
 }
 
 #pragma mark - Searching
@@ -74,7 +75,15 @@
 }
 
 - (void)executeSearchWithTerm:(NSString *)term {
-    
+    if( [self.dataSourceSearcher respondsToSelector:@selector(dataSource:didSearchWithTerm:resultsBlock:)] ) {
+        SSFilteredResultsBlock resultsBlock = ^(NSArray *results) {
+            NSLog(@"got results %@", results);
+        };
+        
+        [self.dataSourceSearcher dataSource:self
+                          didSearchWithTerm:term
+                               resultsBlock:resultsBlock];
+    }
 }
 
 #pragma mark - UISearchDisplayDelegate
